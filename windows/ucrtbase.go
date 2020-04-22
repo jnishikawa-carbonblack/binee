@@ -359,6 +359,10 @@ func UcrtBase32Hooks(emu *WinEmulator) {
 	emu.AddHook("", "strchr", &Hook{
 		Parameters: []string{"pszStart", "wMatch"},
 	})
+	emu.AddHook("", "strcspn", &Hook{
+        Parameters: []string{"a:str", "a:strCharSet"},
+	})
+
 	emu.AddHook("", "srand", &Hook{
 		Parameters: []string{"seed"},
 		Fn: func(emu *WinEmulator, in *Instruction) bool {

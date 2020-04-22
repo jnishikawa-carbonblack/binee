@@ -250,9 +250,17 @@ func NtdllHooks(emu *WinEmulator) {
 	emu.AddHook("", "ZwQueryInformationProcess", &Hook{
 		Parameters: []string{"ProcessHandle", "ProcessInformationClass", "ProcessInformation", "ProcessInformationLength", "ReturnLength"},
 	})
+	emu.AddHook("", "ZwQueryInformationThread", &Hook{
+		Parameters: []string{"ThreadHandle", "ThreadInformationClass", "ThreadInformation", "ThreadInformationLength", "ReturnLength"},
+	})
+
 	emu.AddHook("", "ZwQuerySystemInformation", &Hook{
 		Parameters: []string{"SystemInformationClass", "SystemInformation", "SystemInformationLength", "ReturnLength"},
 	})
+	emu.AddHook("", "ZwQuerySystemInformationEx", &Hook{
+		Parameters: []string{"SystemInformationClass", "InputBuffer", "InputBufferLength", "SystemInformation", "SystemInformationLength", "ReturnLength"},
+	})
+
 	emu.AddHook("", "ZwQueryValueKey", &Hook{
 		Parameters: []string{"KeyHandle", "ValueName", "KeyValueInformationClass", "KeyValueInformation", "Length", "ResultLength"},
 	})

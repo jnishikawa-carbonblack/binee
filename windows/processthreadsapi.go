@@ -46,6 +46,10 @@ func ProcessthreadsapiHooks(emu *WinEmulator) {
 		Fn:         SkipFunctionStdCall(true, uint64(emu.Scheduler.CurThreadId())),
 	})
 
+	emu.AddHook("", "GetThreadGroupAffinity", &Hook{
+		Parameters: []string{"hThread", "GroupAffinity"},
+	})
+
 	emu.AddHook("", "OpenProcessToken", &Hook{
 		Parameters: []string{"ProcessHandle", "DesiredAccess", "TokenHandle"},
 		Fn:         SkipFunctionStdCall(true, 0x1),

@@ -13,6 +13,10 @@ func WinbaseHooks(emu *WinEmulator) {
 	emu.AddHook("", "AddAtomW", &Hook{
 		Parameters: []string{"w:lpString"},
 	})
+	emu.AddHook("", "GetActiveProcessorGroupCount", &Hook{
+		Parameters: []string{},
+	})
+
 	emu.AddHook("", "GetEnvironmentVariableA", &Hook{
 		Parameters: []string{"a:lpName", "lpBuffer", "nSize"},
 		Fn: func(emu *WinEmulator, in *Instruction) bool {

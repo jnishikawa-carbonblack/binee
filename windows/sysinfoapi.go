@@ -98,6 +98,14 @@ func Sysinfoapi(emu *WinEmulator) {
 			return SkipFunctionStdCall(true, 0x1)(emu, in)
 		},
 	})
+	emu.AddHook("", "GetLogicalProcessorInformationEx", &Hook{
+		Parameters: []string{"RelationshipType", "Buffer", "ReturnedLength"},
+		Fn: func(emu *WinEmulator, in *Instruction) bool {
+			return SkipFunctionStdCall(true, 0x1)(emu, in)
+		},
+
+	})
+
 	emu.AddHook("", "GetNativeSystemInfo", &Hook{
 		Parameters: []string{"lpSystemInfo"},
 		Fn: func(emu *WinEmulator, in *Instruction) bool {
