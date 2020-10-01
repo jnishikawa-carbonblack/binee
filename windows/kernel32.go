@@ -846,4 +846,64 @@ func KernelbaseHooks(emu *WinEmulator) {
 			}
 		},
 	})
+
+	// socket hooks
+
+	emu.AddHook("", "WSACleanup", &Hook{
+		Parameters: []string{},
+		Fn:         SkipFunctionStdCall(true, 0x0),
+	})
+
+	emu.AddHook("", "getaddrinfo", &Hook{
+		Parameters: []string{"a:pNodeName", "a:pServiceName", "pHints", "ppResult"},
+		Fn:         SkipFunctionStdCall(true, 0x0),
+	})
+
+	emu.AddHook("", "WSApSetPostRoutine", &Hook{
+		Parameters: []string{"lpPostRoutine"},
+		Fn:         SkipFunctionStdCall(true, 0x0),
+	})
+
+	emu.AddHook("", "getpeername", &Hook{
+		Parameters: []string{"sock", "name", "namelen"},
+		Fn:         SkipFunctionStdCall(true, 0x0),
+	})
+
+	emu.AddHook("", "freeaddrinfo", &Hook{
+		Parameters: []string{"pAddrInfo"},
+		Fn:         SkipFunctionStdCall(true, 0x0),
+	})
+
+	emu.AddHook("", "sendto", &Hook{
+		Parameters: []string{"sock", "a:buf", "len", "flags", "to", "tolen"},
+		Fn: func(emu *WinEmulator, in *Instruction) bool {
+			// just return the len argument
+			return SkipFunctionStdCall(true, in.Args[2])(emu, in)
+		},
+	})
+
+	emu.AddHook("", "socket", &Hook{
+		Parameters: []string{"af", "type", "protocol"},
+		Fn:         SkipFunctionStdCall(true, 0x3),
+	})
+
+	emu.AddHook("", "recvfrom", &Hook{
+		Parameters: []string{"sock", "buf", "len", "flags", "from", "fromlen"},
+		Fn:         SkipFunctionStdCall(true, 0x0),
+		//Fn: func(emu *WinEmulator, in *Instruction) bool {
+		//    // just return the len argument
+		//    return SkipFunctionStdCall(true, in.Args[2])(emu, in)
+		//},
+	})
+
+	emu.AddHook("", "connect", &Hook{
+		Parameters: []string{"sock", "name", "namelen"},
+		Fn:         SkipFunctionStdCall(true, 0x0),
+	})
+
+	emu.AddHook("", "WSASetServiceA", &Hook{
+		Parameters: []string{"lpqsRegInfo", "essOperation", "dwControlFlags"},
+		Fn:         SkipFunctionStdCall(true, 0x0),
+	})
+
 }
